@@ -1,0 +1,12 @@
+{
+  "name": "mobile-rts",
+  "displayName": "mobile-rts",
+  "expo": {
+    "name": "mobile-rts",
+    "slug": "mobile-rts",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
