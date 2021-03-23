@@ -1,15 +1,56 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, TextInput, Button } from 'react-native';
 
 export default function App() {
+  const ferma = (n) => {
+    if (n < 1 || !/^[0-9]*$/.test(n))
+      return "N value is invalid";
+
+    if (n % 2 == 0)
+      return `A: ${n / 2}, B: 2`;
+
+    let x = ~~(Math.sqrt(n));
+    let y = 0;
+
+    while (true) {
+      const squaredY = x ** 2 - n;
+      y = ~~(Math.sqrt(squaredY));
+
+      if (y ** 2 === squaredY)
+        break;
+      else
+        x += 1
+    }
+
+    return `A: ${x - y}, B: ${x + y}`;
+  }
+
+  const [n, onChangeNumber] = useState(null);
+  const [result, setResult] = useState(null);
+  const pressHandler = () => setResult(ferma(n));
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView>
+      <TextInput
+        style={styles.input}
+        onChangeText={onChangeNumber}
+        value={n}
+        placeholder="Write n value"
+        keyboardType="numeric"
+      />
+      <View style={styles.btn}>
+        <Button
+          title="Calculate"
+          color="#fff"
+          onPress={pressHandler}
+        />
+      </View>
+      <Text style={styles.result}>
+        {result}</Text>
+    </SafeAreaView>
   );
-}
+};
+
 
 const styles = StyleSheet.create({
   container: {
@@ -18,4 +59,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  input: {
+    alignSelf: 'center',
+    top: 200,
+    fontSize: 30
+  },
+  btn: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    top: 250,
+    height: 50,
+    width: 150,
+    backgroundColor: 'black',
+  },
+  result: {
+    alignSelf: 'center',
+    top: 300,
+    fontSize: 25
+  }
 });
