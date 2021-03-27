@@ -11,15 +11,21 @@ export default function App() {
 
     let x = ~~(Math.sqrt(n));
     let y = 0;
+    let count = 1; // iterations counter
+    const breakpoint = 10 ** 6; // max value of iterations
 
     while (true) {
       const squaredY = x ** 2 - n;
       y = ~~(Math.sqrt(squaredY));
 
+      if (count > breakpoint) return `Error: too many iterations`;
+
       if (y ** 2 === squaredY)
         break;
-      else
-        x += 1
+      else {
+        x += 1;
+        count += 1;
+      }
     }
 
     return `A: ${x - y}, B: ${x + y}`;
