@@ -1,58 +1,64 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TextInput, Button } from 'react-native';
+import Genetic from './src/Genetic'
 
 export default function App() {
-  const ferma = (n) => {
-    if (n < 1 || !/^[0-9]*$/.test(n))
-      return "N value is invalid";
-
-    if (n % 2 == 0)
-      return `A: ${n / 2}, B: 2`;
-
-    let x = ~~(Math.sqrt(n));
-    let y = 0;
-    let count = 1; // iterations counter
-    const breakpoint = 10 ** 6; // max value of iterations
-
-    while (true) {
-      const squaredY = x ** 2 - n;
-      y = ~~(Math.sqrt(squaredY));
-
-      if (count > breakpoint) return `Error: too many iterations`;
-
-      if (y ** 2 === squaredY)
-        break;
-      else {
-        x += 1;
-        count += 1;
-      }
-    }
-
-    return `A: ${x - y}, B: ${x + y}`;
-  }
-
-  const [n, onChangeNumber] = useState(null);
-  const [result, setResult] = useState(null);
-  const pressHandler = () => setResult(ferma(n));
+  const [a, setA] = useState(null);
+  const [b, setB] = useState(null);
+  const [c, setC] = useState(null);
+  const [d, setD] = useState(null);
+  const [y, setY] = useState(null);
+  const [result, setResult] = useState('[]');
 
   return (
     <SafeAreaView>
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeNumber}
-        value={n}
-        placeholder="Write n value"
-        keyboardType="numeric"
-      />
+      <View style={styles.container}>
+        <TextInput style={styles.expression}
+          onChangeText={setA}
+          value={a}
+          placeholder="a"
+          keyboardType="numeric"
+        />
+        <Text style={styles.expression}>{'*x1 + '}</Text>
+        <TextInput style={styles.expression}
+          onChangeText={setB}
+          value={b}
+          placeholder="b"
+          keyboardType="numeric"
+        />
+        <Text style={styles.expression}>{'*x2 + '}</Text>
+        <TextInput style={styles.expression}
+          onChangeText={setC}
+          value={c}
+          placeholder="c"
+          keyboardType="numeric"
+        />
+        <Text style={styles.expression}>{'*x3 + '}</Text>
+        <TextInput style={styles.expression}
+          onChangeText={setD}
+          value={d}
+          placeholder="d"
+          keyboardType="numeric"
+        />
+        <Text style={styles.expression}>{'*x4 = '}</Text>
+        <TextInput style={styles.expression}
+          onChangeText={setY}
+          value={y}
+          placeholder="y"
+          keyboardType="numeric"
+        />
+      </View>
+      <Text style={styles.result}>
+        {`[x1, x2, x3, x4] = ${result}`}
+      </Text>
       <View style={styles.btn}>
         <Button
           title="Calculate"
           color="#fff"
-          onPress={pressHandler}
+          onPress={() => setResult(new Genetic([a, b, c, d], y).solve())}
         />
       </View>
-      <Text style={styles.result}>
-        {result}</Text>
+
     </SafeAreaView>
   );
 };
@@ -60,28 +66,33 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
+    width: '90%',
+    top: 200,
+    flexDirection: 'row',
+    alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  input: {
+  expression: {
+    fontSize: 25
+  },
+  result: {
     alignSelf: 'center',
-    top: 200,
-    fontSize: 30
+    top: 269,
+    fontSize: 25
+  },
+  time: {
+    alignSelf: 'center',
+    top: 320,
+    fontSize: 22
   },
   btn: {
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    top: 250,
+    top: 400,
     height: 50,
     width: 150,
     backgroundColor: 'black',
   },
-  result: {
-    alignSelf: 'center',
-    top: 300,
-    fontSize: 25
-  }
 });
